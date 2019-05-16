@@ -45,11 +45,14 @@ public class JavaListRegex {
         boolean bandera = false;
         Pattern patronCedula = Pattern.compile("\\d{7,10}");
         Pattern patronNombre = Pattern.compile("^([A-Z][a-z]+(\\s){0,1}){2,}");
-        Pattern patronDireccion = Pattern.compile("^(Carrera|Calle)(\\s)[0-9]{1,3}[A-Za-z]{0,1}(\\s)(#)(\\s)[0-9]{1,3}[A-Za-z]{0,1}(\\s)[0-9]{1,3}");
+        //Pattern patronDireccion = Pattern.compile("^(Carrera|Calle)(\\s)[0-9]{1,3}[A-Za-z]{0,1}(\\s)(#)(\\s)[0-9]{1,3}[A-Za-z]{0,1}(\\s)[0-9]{1,3}");
+        Pattern patronDireccion = Pattern.compile("^(Carrera|Calle|Avenida|Transversal|Diagonal|Autopista)(\\s)[0-9]{1,3}[A-Za-z]{0,1}(\\s)(#)(\\s)[0-9]{1,3}[A-Za-z]{0,1}(\\s)[0-9]{1,3}");
         Pattern patronTelefono = Pattern.compile("^(2|3|4|5|6)[0-9]{6}");
-        Pattern patronCorreo = Pattern.compile("([A-Za-z]+(_){0,1}){2}[0-9]{5}(@elpoli.edu.co)");
+       //Pattern patronCorreo = Pattern.compile("([A-Za-z]+(_){0,1}){2}[0-9]{5}(@elpoli.edu.co)");
+        Pattern patronCorreo = Pattern.compile("^[a-zA-Z0-9._-]+(@)+[a-zA-Z0-9.-_]+(.)+[a-zA-Z]");
         Pattern patronEstatura = Pattern.compile("^[1-2](.)[0-9]{2}");
-        Pattern patronFechaNacimiento = Pattern.compile("[1-31](/)[1-12](/)[1950-2050]");
+        //Pattern patronFechaNacimiento = Pattern.compile("[1-31](/)[1-12](/)[1950-2050]");
+        Pattern patronFechaNacimiento = Pattern.compile("^[1-31](/)(1-12)(/)(^[19][00-99]|^[20][00-20])");
         
         String cedula = null;
         String nombre = null;
