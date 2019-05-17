@@ -192,13 +192,18 @@ public class JavaListRegex {
      */
     public static void showPeople() {
         // Mostrar personas
-        if(cabeza == null){
+        if(cabeza == null) {
             System.out.println("No existen personas.");
-        }else{
+        }else {
             Nodo cabezaAuxiliar = cabeza;
             System.out.println("*---------------------------------------------------------------------*");
-            while(cabezaAuxiliar != null){
-                System.out.println(cabezaAuxiliar.getPersona().getNombre());
+            while(cabezaAuxiliar != null) {
+                System.out.println(
+                    "C: "+ cabezaAuxiliar.getPersona().getCedula() +" N: "+ cabezaAuxiliar.getPersona().getNombre()
+                    +" D: "+ cabezaAuxiliar.getPersona().getDireccion() +" T: "+ cabezaAuxiliar.getPersona().getTelefono()
+                    +" C: "+ cabezaAuxiliar.getPersona().getCorreo() +" E: "+ cabezaAuxiliar.getPersona().getEstatura()
+                    +" F: "+ cabezaAuxiliar.getPersona().getFechaNacimiento()
+                );
                 cabezaAuxiliar = cabezaAuxiliar.getNodoSgte();
             }
             System.out.println("*---------------------------------------------------------------------*");
@@ -217,7 +222,7 @@ public class JavaListRegex {
             Matcher mat;
             System.out.println("*---------------------------------------------------------------------*");
             while(cabezaAuxiliar != null){
-                p = Pattern.compile("co$");
+                p = Pattern.compile(".co$");
                 mat = p.matcher(cabezaAuxiliar.getPersona().getCorreo());
                 if(mat.find()) {
                     System.out.println("Cédula: "+ cabezaAuxiliar.getPersona().getCedula() +" Correo: "+ cabezaAuxiliar.getPersona().getCorreo());
@@ -232,7 +237,20 @@ public class JavaListRegex {
      * 
      */
     public static void showHeight() {
-        
+        if(cabeza == null) {
+            System.out.println("No existen personas.");
+        }else {
+            Nodo cabezaAuxiliar = cabeza;
+            Pattern p;
+            System.out.println("*---------------------------------------------------------------------*");
+            while(cabezaAuxiliar != null) {
+                p = Pattern.compile("\\.");
+                String[] estatura = p.split(cabezaAuxiliar.getPersona().getEstatura());
+                System.out.println("La estatura de "+ cabezaAuxiliar.getPersona().getNombre() +" es de "+ estatura[0] +" Metro(s) con "+ estatura[1] +" Centimetros");
+                cabezaAuxiliar = cabezaAuxiliar.getNodoSgte();
+            }
+            System.out.println("*---------------------------------------------------------------------*");
+        }
     }
     
     /**
