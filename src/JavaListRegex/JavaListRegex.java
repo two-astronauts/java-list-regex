@@ -257,7 +257,28 @@ public class JavaListRegex {
      * 
      */
     public static void replaceAvenueCareer() {
-        
+        if(cabeza == null) {
+            System.out.println("No existen personas.");
+        }else {
+            Nodo cabezaAuxiliar = cabeza;
+            Pattern p;
+            Matcher mat;
+            System.out.println("*---------------------------------------------------------------------*");
+            while(cabezaAuxiliar != null) {
+                p = Pattern.compile("Avenida");
+                mat = p.matcher(cabezaAuxiliar.getPersona().getDireccion());
+                String direccionNueva = mat.replaceAll("Carrera");
+                cabezaAuxiliar.getPersona().setDireccion(direccionNueva);
+                System.out.println(
+                    "C: "+ cabezaAuxiliar.getPersona().getCedula() +" N: "+ cabezaAuxiliar.getPersona().getNombre()
+                    +" D: "+ cabezaAuxiliar.getPersona().getDireccion() +" T: "+ cabezaAuxiliar.getPersona().getTelefono()
+                    +" C: "+ cabezaAuxiliar.getPersona().getCorreo() +" E: "+ cabezaAuxiliar.getPersona().getEstatura()
+                    +" F: "+ cabezaAuxiliar.getPersona().getFechaNacimiento()
+                );
+                cabezaAuxiliar = cabezaAuxiliar.getNodoSgte();
+            }
+            System.out.println("*---------------------------------------------------------------------*");
+        }
     }
     
     /**
