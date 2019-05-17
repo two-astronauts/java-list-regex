@@ -23,36 +23,52 @@ public class JavaListRegex {
      */
     public static void main(String[] args) {  
         int option = 0;
-        String cadena, menu="MENU\n1.Ingresar datos\n0.salir\nDigite la opcion";
+        String menu = "MENU\n1.Ingresar datos\n2.Mostrar personas\n3.Correos que terminen en co\n4.Mostrar estaturas"
+            + "\n5.Reemplazar 'Avenida' por 'Carrera'\n6.Teléfonos que empiecen por 'x'\n0.salir\nDigite la opcion";
 
         do{
             try{
                 option = Integer.parseInt(JOptionPane.showInputDialog(menu));
                 switch(option){
-                    case 1: 
+                    case 1:
                         validarInformacion();
+                        break;
+                    case 2:
+                        showPeople();
+                        break;
+                    case 3:
+                        showEmailsEndsWith();
+                        break;
+                    case 4:
+                        showHeight();
+                        break;
+                    case 5:
+                        replaceAvenueCareer();
+                        break;
+                    case 6:
+                        phoneStartsWith();
                         break;
                     case 0:
                         break;
                 }
-            }catch(Exception e){
+            }catch(Exception e) {
                 break;
             }
         }while(option != 0);
     }
     
+    /**
+     * 
+     */
     public static void validarInformacion() {
         boolean bandera = false;
         Pattern patronCedula = Pattern.compile("\\d{7,10}");
         Pattern patronNombre = Pattern.compile("^([A-Z][a-z]+(\\s){0,1}){2,}");
-        //Pattern patronDireccion = Pattern.compile("^(Carrera|Calle)(\\s)[0-9]{1,3}[A-Za-z]{0,1}(\\s)(#)(\\s)[0-9]{1,3}[A-Za-z]{0,1}(\\s)[0-9]{1,3}");
         Pattern patronDireccion = Pattern.compile("^(Carrera|Calle|Avenida|Transversal|Diagonal|Autopista)(\\s)[0-9]{1,3}[A-Za-z]{0,1}(\\s)(#)(\\s)[0-9]{1,3}[A-Za-z]{0,1}(\\s)[0-9]{1,3}");
         Pattern patronTelefono = Pattern.compile("^(2|3|4|5|6)[0-9]{6}");
-       //Pattern patronCorreo = Pattern.compile("([A-Za-z]+(_){0,1}){2}[0-9]{5}(@elpoli.edu.co)");
-        Pattern patronCorreo = Pattern.compile("^[a-zA-Z0-9._-]+(@)+[a-zA-Z0-9.-_]+(.)+[a-zA-Z]");
+        Pattern patronCorreo = Pattern.compile("^[a-zA-Z0-9._-]+(@)[a-zA-Z0-9.-_]+(.)[a-zA-Z]+");
         Pattern patronEstatura = Pattern.compile("^[1-2](.)[0-9]{2}");
-        //Pattern patronFechaNacimiento = Pattern.compile("[1-31](/)[1-12](/)[1950-2050]");
-        Pattern patronFechaNacimiento = Pattern.compile("^[1-31](/)(1-12)(/)(^[19][00-99]|^[20][00-20])");
+        Pattern patronFechaNacimiento = Pattern.compile("([0-2][0-9]|3[0-1])(\\/)(0[1-9]|1[0-2])(\\/)(19|20)[0-9]{2}");
         
         String cedula = null;
         String nombre = null;
@@ -131,8 +147,8 @@ public class JavaListRegex {
         bandera = false;
         
         while(!bandera) {
-            correo = JOptionPane.showInputDialog("Ingrese la estatura");
-            matEstatura = patronEstatura.matcher(correo);
+            estatura = JOptionPane.showInputDialog("Ingrese la estatura");
+            matEstatura = patronEstatura.matcher(estatura);
             if(!matEstatura.matches()) {
                 JOptionPane.showMessageDialog(null, "Estatura invalida");
             }else {
@@ -143,8 +159,8 @@ public class JavaListRegex {
         bandera = false;
         
         while(!bandera) {
-            correo = JOptionPane.showInputDialog("Ingrese la fecha de nacimiento");
-            matFechaNacimiento = patronFechaNacimiento.matcher(correo);
+            fechaNacimiento = JOptionPane.showInputDialog("Ingrese la fecha de nacimiento");
+            matFechaNacimiento = patronFechaNacimiento.matcher(fechaNacimiento);
             if(!matFechaNacimiento.matches()) {
                 JOptionPane.showMessageDialog(null, "Fecha de nacimiento invalida");
             }else {
@@ -152,7 +168,7 @@ public class JavaListRegex {
             }
         }
             
-        if(cedula != null && nombre != null && direccion != null && telefono != null && correo != null){
+        if(cedula != null && nombre != null && direccion != null && telefono != null && correo != null && estatura != null && fechaNacimiento != null){
             Person persona = new Person(cedula, nombre, direccion, telefono, correo, estatura, fechaNacimiento);
             Nodo nodo = new Nodo(persona);
             // Insertamos en la lista
@@ -166,17 +182,72 @@ public class JavaListRegex {
                 cabezaAuxiliar.setNodoSgte(nodo);
             }
             // Mostrar personas
-            if(cabeza == null){
-                System.out.println("No existen personas.");
-            }else{
-                Nodo cabezaAuxiliar = cabeza;
-                while(cabezaAuxiliar != null){
-                    System.out.println(cabezaAuxiliar.getPersona().getNombre());
-                    cabezaAuxiliar = cabezaAuxiliar.getNodoSgte();
-                }
-            }
+            showPeople();
             bandera = true;
         }
+    }
+    
+    /**
+     * 
+     */
+    public static void showPeople() {
+        // Mostrar personas
+        if(cabeza == null){
+            System.out.println("No existen personas.");
+        }else{
+            Nodo cabezaAuxiliar = cabeza;
+            System.out.println("*---------------------------------------------------------------------*");
+            while(cabezaAuxiliar != null){
+                System.out.println(cabezaAuxiliar.getPersona().getNombre());
+                cabezaAuxiliar = cabezaAuxiliar.getNodoSgte();
+            }
+            System.out.println("*---------------------------------------------------------------------*");
+        }
+    }
+    
+    /**
+     * 
+     */
+    public static void showEmailsEndsWith() {
+        if(cabeza == null){
+            System.out.println("No existen personas.");
+        }else{
+            Nodo cabezaAuxiliar = cabeza;
+            Pattern p;
+            Matcher mat;
+            System.out.println("*---------------------------------------------------------------------*");
+            while(cabezaAuxiliar != null){
+                p = Pattern.compile("co$");
+                mat = p.matcher(cabezaAuxiliar.getPersona().getCorreo());
+                if(mat.find()) {
+                    System.out.println("Cédula: "+ cabezaAuxiliar.getPersona().getCedula() +" Correo: "+ cabezaAuxiliar.getPersona().getCorreo());
+                }
+                cabezaAuxiliar = cabezaAuxiliar.getNodoSgte();
+            }
+            System.out.println("*---------------------------------------------------------------------*");
+        }
+    }
+    
+    /**
+     * 
+     */
+    public static void showHeight() {
+        
+    }
+    
+    /**
+     * 
+     */
+    public static void replaceAvenueCareer() {
+        
+    }
+    
+    /**
+     * 
+     */
+    
+    public static void phoneStartsWith() {
+        
     }
     
 }
