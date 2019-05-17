@@ -284,9 +284,25 @@ public class JavaListRegex {
     /**
      * 
      */
-    
     public static void phoneStartsWith() {
-        
+        if(cabeza == null) {
+            System.out.println("No existen personas.");
+        }else {
+            Nodo cabezaAuxiliar = cabeza;
+            Pattern p;
+            Matcher mat;
+            String numero = JOptionPane.showInputDialog("Ingrese el el número por el cual quiera empezar a buscar");
+            System.out.println("*---------------------------------------------------------------------*");
+            while(cabezaAuxiliar != null) {
+                p = Pattern.compile("^"+numero+"(\\d*)");
+                mat = p.matcher(cabezaAuxiliar.getPersona().getTelefono());
+                if(mat.matches()) {
+                    System.out.println("Cédula: "+ cabezaAuxiliar.getPersona().getCedula() +" Teléfono: "+ cabezaAuxiliar.getPersona().getTelefono());
+                }
+                cabezaAuxiliar = cabezaAuxiliar.getNodoSgte();
+            }
+            System.out.println("*---------------------------------------------------------------------*");
+        }
     }
     
 }
