@@ -25,7 +25,7 @@ public class JavaListRegex {
         int option = 0;
         String menu = "MENU\n1.Ingresar datos\n2.Mostrar personas\n3.Correos que terminen en co\n4.Mostrar estaturas"
             + "\n5.Reemplazar 'Avenida' por 'Carrera'\n6.Teléfonos que empiecen por 'x'\n7.Mostrar direcciones que contengan los números 'xx'"
-            + "\n0.salir\nDigite la opcion";
+            + "\n8.Reemplazar nombre weird\n9.Reemplazar en la fecha / por -\n0.salir\nDigite la opcion";
 
         do{
             try{
@@ -51,6 +51,12 @@ public class JavaListRegex {
                         break;
                     case 7:
                         addressWith();
+                        break;
+                    case 8:
+                        replaceWeirdName();
+                        break;
+                    case 9:
+                        changeDateFormat();
                         break;
                     case 0:
                         break;
@@ -327,6 +333,42 @@ public class JavaListRegex {
                 while(mat.find()) {
                     System.out.println("D: "+ cabezaAuxiliar.getPersona().getDireccion() +" Empieza "+ mat.start() +"-"+ mat.end() +" y su valor: "+ cabezaAuxiliar.getPersona().getDireccion().substring(mat.start(),mat.end()));
                 }
+                cabezaAuxiliar = cabezaAuxiliar.getNodoSgte();
+            }
+            System.out.println("*---------------------------------------------------------------------*");
+        }
+    }
+    
+    public static void replaceWeirdName() {
+        if(cabeza == null) {
+            System.out.println("No existen personas.");
+        }else {
+            Nodo cabezaAuxiliar = cabeza;
+            Pattern p;
+            Matcher mat;
+            System.out.println("*---------------------------------------------------------------------*");
+            while(cabezaAuxiliar != null) {
+                p = Pattern.compile("(a|e|i|o|u)");
+                mat = p.matcher(cabezaAuxiliar.getPersona().getNombre());
+                String nombreNuevo = mat.replaceFirst("@");
+                cabezaAuxiliar.getPersona().setNombre(nombreNuevo);
+                System.out.println(" Nombre: "+ cabezaAuxiliar.getPersona().getNombre());
+                cabezaAuxiliar = cabezaAuxiliar.getNodoSgte();
+            }
+            System.out.println("*---------------------------------------------------------------------*");
+        }
+    }
+    
+    public static void changeDateFormat() {
+        if(cabeza == null) {
+            System.out.println("No existen personas.");
+        }else {
+            Nodo cabezaAuxiliar = cabeza;
+            System.out.println("*---------------------------------------------------------------------*");
+            while(cabezaAuxiliar != null) {
+                String fechaNueva = cabezaAuxiliar.getPersona().getFechaNacimiento().replace("/", "-");
+                cabezaAuxiliar.getPersona().setFechaNacimiento(fechaNueva);
+                System.out.println(" Nombre: "+ cabezaAuxiliar.getPersona().getFechaNacimiento());
                 cabezaAuxiliar = cabezaAuxiliar.getNodoSgte();
             }
             System.out.println("*---------------------------------------------------------------------*");
