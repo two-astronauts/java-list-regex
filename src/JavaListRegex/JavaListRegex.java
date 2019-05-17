@@ -24,7 +24,8 @@ public class JavaListRegex {
     public static void main(String[] args) {  
         int option = 0;
         String menu = "MENU\n1.Ingresar datos\n2.Mostrar personas\n3.Correos que terminen en co\n4.Mostrar estaturas"
-            + "\n5.Reemplazar 'Avenida' por 'Carrera'\n6.Teléfonos que empiecen por 'x'\n0.salir\nDigite la opcion";
+            + "\n5.Reemplazar 'Avenida' por 'Carrera'\n6.Teléfonos que empiecen por 'x'\n7.Mostrar direcciones que contengan los números 'xx'"
+            + "\n0.salir\nDigite la opcion";
 
         do{
             try{
@@ -47,6 +48,9 @@ public class JavaListRegex {
                         break;
                     case 6:
                         phoneStartsWith();
+                        break;
+                    case 7:
+                        addressWith();
                         break;
                     case 0:
                         break;
@@ -291,13 +295,37 @@ public class JavaListRegex {
             Nodo cabezaAuxiliar = cabeza;
             Pattern p;
             Matcher mat;
-            String numero = JOptionPane.showInputDialog("Ingrese el el número por el cual quiera empezar a buscar");
+            String numero = JOptionPane.showInputDialog("Ingrese el el número por el que quiere buscar");
             System.out.println("*---------------------------------------------------------------------*");
             while(cabezaAuxiliar != null) {
                 p = Pattern.compile("^"+numero+"(\\d*)");
                 mat = p.matcher(cabezaAuxiliar.getPersona().getTelefono());
                 if(mat.matches()) {
                     System.out.println("Cédula: "+ cabezaAuxiliar.getPersona().getCedula() +" Teléfono: "+ cabezaAuxiliar.getPersona().getTelefono());
+                }
+                cabezaAuxiliar = cabezaAuxiliar.getNodoSgte();
+            }
+            System.out.println("*---------------------------------------------------------------------*");
+        }
+    }
+    
+    /**
+     * 
+     */
+    public static void addressWith() {
+        if(cabeza == null) {
+            System.out.println("No existen personas.");
+        }else {
+            Nodo cabezaAuxiliar = cabeza;
+            Pattern p;
+            Matcher mat;
+            String numero = JOptionPane.showInputDialog("Ingrese el el número que quiere buscar");
+            System.out.println("*---------------------------------------------------------------------*");
+            while(cabezaAuxiliar != null) {
+                p = Pattern.compile(numero);
+                mat = p.matcher(cabezaAuxiliar.getPersona().getDireccion());
+                while(mat.find()) {
+                    System.out.println("D: "+ cabezaAuxiliar.getPersona().getDireccion() +" Empieza "+ mat.start() +"-"+ mat.end() +" y su valor: "+ cabezaAuxiliar.getPersona().getDireccion().substring(mat.start(),mat.end()));
                 }
                 cabezaAuxiliar = cabezaAuxiliar.getNodoSgte();
             }
